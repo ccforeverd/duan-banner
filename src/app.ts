@@ -4,18 +4,11 @@ import * as path from 'path'
 import Koa from 'koa'
 import KoaRouter from 'koa-router'
 import KoaViews from 'koa-views'
-
-console.log(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf-8'))
+import KoaStatic from 'koa-static'
+import sizeOf from 'image-size'
+import Big from 'big.js'
 
 const app = new Koa()
-
-const router = new KoaRouter()
-router.get('/', async (ctx) => {
-  // ctx.body = 'hello world'
-  await render().call(ctx, 'banner.pug', {
-    youAreUsingPug: true
-  })
-})
 
 const render = KoaViews(__dirname, {
   extension: 'pug'
@@ -23,9 +16,38 @@ const render = KoaViews(__dirname, {
 
 app.context.render = render()
 
+const router = new KoaRouter()
+router
+  .get('/', async (ctx) => {
+    await render().call(ctx, 'index.pug', getBannerImages())
+  })
+  .get('/config', async (ctx) => {
+    await render().call(ctx, 'config.pug', getBannerImages())
+  })
+
 app
   // .use(render)
+  .use(KoaStatic(__dirname))
   .use(router.routes())
   .use(router.allowedMethods())
 
 app.listen(8456, '0.0.0.0')
+
+function getBannerImages (): {
+  images: string[],
+  height: number | string,
+  margin: number | string
+} {
+  const images = fs.readdirSync(path.join(__dirname, 'images'))
+    .map(item => `images/${item}`)
+  const height = Big(Math.max(...images.map(item => {
+    const { width, height } = sizeOf(path.join(__dirname, item))
+    return height * 100 / width
+  }))).round(2).toNumber()
+
+  return {
+    images,
+    height,
+    margin: 20
+  }
+}

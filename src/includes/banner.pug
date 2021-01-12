@@ -1,0 +1,33 @@
+.swiper-container(style=`
+  width: calc(100vw - ${margin * 2}px);
+  margin: ${margin}px auto;
+  height: ${height}vw`
+)
+  .swiper-wrapper
+    each item in images
+      .swiper-slide
+        img(src= item alt= item style="width: 100%; display: block;")
+    //- .swiper-slide= 'Slide 2'
+    //- .swiper-slide= 'Slide 3'
+  .swiper-pagination
+
+script.
+  var mySwiper = new Swiper ('.swiper-container', {
+    loop: true, // 循环模式选项
+
+    // 如果需要分页器
+    pagination: {
+      el: '.swiper-pagination',
+    },
+
+    // 如果需要前进后退按钮
+    //- navigation: {
+    //-   nextEl: '.swiper-button-next',
+    //-   prevEl: '.swiper-button-prev',
+    //- },
+    
+    // 如果需要滚动条
+    //- scrollbar: {
+    //-   el: '.swiper-scrollbar',
+    //- },
+  })
