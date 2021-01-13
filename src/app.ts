@@ -31,6 +31,10 @@ app
   .use(router.routes())
   .use(router.allowedMethods())
 
+app.addListener('error', e => {
+  console.log(e)
+})
+
 app.listen(8456, '0.0.0.0')
 
 function getBannerImages (): {
@@ -48,6 +52,6 @@ function getBannerImages (): {
   return {
     images,
     height,
-    margin: 20
+    margin: 60
   }
 }

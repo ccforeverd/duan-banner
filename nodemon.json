@@ -8,8 +8,9 @@
   "execMap": {
     "ts": "ts-node"
   },
-  "events": {
-    "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
+  "_events": {
+    "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'",
+    "放弃使用": "linux 没有 osascript 命令"
   },
   "watch": [
     "src"
