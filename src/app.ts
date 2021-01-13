@@ -32,7 +32,7 @@ app
   .use(router.allowedMethods())
 
 app.addListener('error', e => {
-  console.log(e)
+  console.log('[app error]', e)
 })
 
 app.listen(8456, '0.0.0.0')
