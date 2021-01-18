@@ -19,7 +19,11 @@ app.context.render = render()
 const router = new KoaRouter()
 router
   .get('/', async (ctx) => {
-    await render().call(ctx, 'index.pug', getBannerImages())
+    const { images: pages } = getPageImages()
+    await render().call(ctx, 'index.pug', {
+      pages,
+      ...getBannerImages()
+    })
   })
   .get('/config', async (ctx) => {
     await render().call(ctx, 'config.pug', getBannerImages())
@@ -36,6 +40,16 @@ app.addListener('error', e => {
 })
 
 app.listen(8456, '0.0.0.0')
+
+function getPageImages (): {
+  images: string[]
+} {
+  const images = fs.readdirSync(path.join(__dirname, 'pages'))
+    .map(item => `pages/${item}`)
+  return {
+    images
+  }
+}
 
 function getBannerImages (): {
   images: string[],

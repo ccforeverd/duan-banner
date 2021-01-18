@@ -1,7 +1,9 @@
 {
   "scripts": {
-    "start": "ts-node src/app.ts",
+    "ts": "ts-node src/app.ts",
     "dev": "nodemon src/app.ts",
+    "start": "pm2 start --name duan-banner --interpreter ./node_modules/.bin/ts-node ./src/app.ts",
+    "stop": "pm2 stop duan-banner",
     "lint": "eslint --ext .js,.ts . --fix"
   },
   "devDependencies": {
